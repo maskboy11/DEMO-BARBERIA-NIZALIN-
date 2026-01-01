@@ -3,265 +3,179 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Barbería Nizalin | Reserva tu cita online</title>
-  <meta name="description" content="Reserva tu cita en Barbería Nizalin en Usera, Madrid. Elige servicio, barbero, día y hora con una experiencia similar a Booksy, 100% online.">
+  <title>Barbería Nizalin | Reserva online</title>
+  <meta name="description" content="Reserva tu cita en Barbería Nizalin en Usera. Elige servicio, barbero, día y hora de forma rápida y profesional." />
   <link rel="stylesheet" href="styles.css" />
 </head>
+
 <body>
-  <div class="page">
-    <!-- HEADER SIMPLE -->
-    <header class="site-header">
-      <div class="container site-header__container">
-        <div class="brand">
-          <span class="brand__title">Barbería Nizalin</span>
-          <span class="brand__tagline">Barbería moderna &amp; premium en Usera</span>
-        </div>
-        <nav class="main-nav" aria-label="Navegación principal">
-          <ul class="main-nav__menu">
-            <li class="main-nav__item"><a href="#reserva" class="main-nav__link">Reservar</a></li>
-            <li class="main-nav__item"><a href="#local" class="main-nav__link">Nuestro local</a></li>
-            <li class="main-nav__item"><a href="#mapa" class="main-nav__link">Cómo llegar</a></li>
-          </ul>
-        </nav>
+<div class="page">
+
+  <!-- HEADER -->
+  <header class="site-header">
+    <div class="container site-header__container">
+      <div class="brand">
+        <span class="brand__title">Barbería Nizalin</span>
+        <span class="brand__tagline">Barbería urbana & premium en Usera</span>
       </div>
-    </header>
+      <nav class="main-nav">
+        <ul class="main-nav__menu">
+          <li><a href="#reserva">Reservar</a></li>
+          <li><a href="#equipo">Equipo</a></li>
+          <li><a href="#local">Nuestro local</a></li>
+          <li><a href="#mapa">Cómo llegar</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
 
-    <main class="site-main">
-      <!-- HERO -->
-      <section id="inicio" class="hero" aria-labelledby="hero-title">
-        <div class="container hero__container">
-          <div class="hero__content">
-            <h1 id="hero-title" class="hero__title">Reserva tu cita en Barbería Nizalin</h1>
-            <p class="hero__subtitle">
-              Corte clásico, fades y barba con una experiencia de reserva rápida y clara, inspirada en plataformas como Booksy pero pensada solo para ti.
-            </p>
-            <button class="btn btn--primary hero__button" data-scroll-target="#reserva">
-              Reservar cita
-            </button>
-            <div class="hero__info">
-              <p class="hero__info-item">
-                📍 Av. de Rafaela Ybarra, 34, Usera, Madrid
-              </p>
-              <p class="hero__info-item">
-                ⭐ Experiencia premium para hombres que cuidan su estilo.
-              </p>
-            </div>
-          </div>
-          <div class="hero__media">
-            <!-- Imagen grande tipo Unsplash -->
-            <img
-              src="https://images.unsplash.com/photo-1517832207067-4db24a2ae47c?auto=format&fit=crop&w=1200&q=80"
-              alt="Interior moderno de barbería con barbero trabajando"
-              class="hero__image"
-            />
-          </div>
-        </div>
-      </section>
+  <main>
 
-      <!-- SECCIÓN RESERVA ESTILO BOOKSY -->
-      <section id="reserva" class="section section--booking" aria-labelledby="booking-title">
-        <div class="container">
-          <header class="section__header">
-            <h2 id="booking-title" class="section__title">Reserva online</h2>
-            <p class="section__subtitle">
-              Completa tu reserva en 4 pasos: servicio, barbero, día y hora. Todo en una sola pantalla, claro y rápido.
-            </p>
-          </header>
-
-          <div class="booking-layout">
-            <!-- Panel pasos (izquierda en desktop) -->
-            <div class="booking-flow">
-              <!-- Paso 1: Servicio -->
-              <section class="booking-step" aria-labelledby="step-services-title">
-                <div class="booking-step__header">
-                  <span class="booking-step__badge">Paso 1</span>
-                  <h3 id="step-services-title" class="booking-step__title">Elige tu servicio</h3>
-                </div>
-                <p class="booking-step__subtitle">
-                  Selecciona el tipo de servicio que quieres para tu próxima visita.
-                </p>
-                <div class="booking-options booking-options--services" id="services-container">
-                  <!-- Botones de servicio generados por JS -->
-                </div>
-              </section>
-
-              <!-- Paso 2: Barbero -->
-              <section class="booking-step" aria-labelledby="step-barber-title">
-                <div class="booking-step__header">
-                  <span class="booking-step__badge">Paso 2</span>
-                  <h3 id="step-barber-title" class="booking-step__title">Elige tu barbero</h3>
-                </div>
-                <p class="booking-step__subtitle">
-                  Elige quién quieres que te atienda. Se mostrarán sus horarios disponibles más adelante.
-                </p>
-                <div class="booking-options booking-options--barbers" id="barbers-container">
-                  <!-- Cards de barbero generadas por JS -->
-                </div>
-              </section>
-
-              <!-- Paso 3: Día -->
-              <section class="booking-step" aria-labelledby="step-date-title">
-                <div class="booking-step__header">
-                  <span class="booking-step__badge">Paso 3</span>
-                  <h3 id="step-date-title" class="booking-step__title">Elige el día</h3>
-                </div>
-                <p class="booking-step__subtitle">
-                  Selecciona la fecha para tu cita.
-                </p>
-                <div class="booking-date">
-                  <input
-                    type="date"
-                    id="booking-date"
-                    class="booking-date__input"
-                    aria-label="Seleccionar fecha de reserva"
-                  />
-                </div>
-              </section>
-
-              <!-- Paso 4: Hora -->
-              <section class="booking-step" aria-labelledby="step-time-title">
-                <div class="booking-step__header">
-                  <span class="booking-step__badge">Paso 4</span>
-                  <h3 id="step-time-title" class="booking-step__title">Elige la hora</h3>
-                </div>
-                <p class="booking-step__subtitle">
-                  Selecciona primero un barbero para ver sus horarios.
-                </p>
-                <div class="booking-options booking-options--hours" id="hours-container">
-                  <!-- Botones de hora generados por JS -->
-                </div>
-              </section>
-            </div>
-
-            <!-- Panel resumen (derecha en desktop) -->
-            <aside class="booking-summary" aria-label="Resumen de la reserva">
-              <h3 class="booking-summary__title">Resumen de tu cita</h3>
-              <div class="booking-summary__item">
-                <span class="booking-summary__label">Servicio</span>
-                <span class="booking-summary__value" id="summary-service">Sin seleccionar</span>
-              </div>
-              <div class="booking-summary__item">
-                <span class="booking-summary__label">Barbero</span>
-                <span class="booking-summary__value" id="summary-barber">Sin seleccionar</span>
-              </div>
-              <div class="booking-summary__item">
-                <span class="booking-summary__label">Día</span>
-                <span class="booking-summary__value" id="summary-date">Sin seleccionar</span>
-              </div>
-              <div class="booking-summary__item">
-                <span class="booking-summary__label">Hora</span>
-                <span class="booking-summary__value" id="summary-hour">Sin seleccionar</span>
-              </div>
-              <p class="booking-summary__text">
-                Este sistema es solo de demostración, no se envía la reserva a ningún servidor.
-              </p>
-              <button class="btn btn--primary booking-summary__button" id="confirm-booking">
-                Confirmar (simulado)
-              </button>
-              <p class="booking-summary__feedback" id="booking-feedback" aria-live="polite"></p>
-            </aside>
-          </div>
-        </div>
-      </section>
-
-      <!-- NUESTRO LOCAL (GALERÍA) -->
-      <section id="local" class="section section--local" aria-labelledby="local-title">
-        <div class="container">
-          <header class="section__header">
-            <h2 id="local-title" class="section__title">Nuestro local</h2>
-            <p class="section__subtitle">
-              Un espacio cuidado al detalle: sillones cómodos, luz suave y un ambiente urbano y elegante para que disfrutes tu corte.
-            </p>
-          </header>
-
-          <div class="local-gallery">
-            <figure class="local-gallery__item">
-              <img
-                src="https://images.unsplash.com/photo-1517832207067-4db24a2ae47c?auto=format&fit=crop&w=900&q=80"
-                alt="Vista general de la barbería con barbero trabajando"
-              />
-            </figure>
-            <figure class="local-gallery__item">
-              <img
-                src="https://images.unsplash.com/photo-1585747860715-2ba37e788b70?auto=format&fit=crop&w=900&q=80"
-                alt="Sillones de barbería de estilo clásico y moderno"
-              />
-            </figure>
-            <figure class="local-gallery__item">
-              <img
-                src="https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=900&q=80"
-                alt="Detalle de herramientas de barbería sobre la mesa"
-              />
-            </figure>
-            <figure class="local-gallery__item local-gallery__item--wide">
-              <img
-                src="https://images.unsplash.com/photo-1521590832167-7bcbfaa6381f?auto=format&fit=crop&w=1200&q=80"
-                alt="Interior de barbería con espejos y luces cálidas"
-              />
-            </figure>
-          </div>
-        </div>
-      </section>
-
-      <!-- MAPA -->
-      <section id="mapa" class="section section--map" aria-labelledby="map-title">
-        <div class="container">
-          <header class="section__header">
-            <h2 id="map-title" class="section__title">Cómo llegar</h2>
-            <p class="section__subtitle">
-              Estamos en Av. de Rafaela Ybarra, 34, Usera, Madrid. Puedes ver la ubicación exacta en el mapa y abrirla en Google Maps.
-            </p>
-          </header>
-
-          <div class="map-wrapper">
-            <div class="map-wrapper__iframe">
-              <!-- Google Maps embebido -->
-              <iframe
-                title="Mapa Barbería Nizalin en Usera"
-                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3037.406943525106!2d-3.706829623927027!3d40.38554885702896!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0xd4226289fa6a2df%3A0x4e1437e9ebc25a92!2sAv.%20de%20Rafaela%20Ybarra%2C%2034%2C%2028026%20Madrid!5e0!3m2!1ses!2ses!4v1700000000000!5m2!1ses!2ses"
-                width="600"
-                height="450"
-                style="border:0;"
-                allowfullscreen=""
-                loading="lazy"
-                referrerpolicy="no-referrer-when-downgrade"
-              ></iframe>
-            </div>
-            <div class="map-wrapper__info">
-              <p class="map-wrapper__address">
-                Av. de Rafaela Ybarra, 34<br />
-                Usera, 28026 Madrid
-              </p>
-              <a
-                class="btn btn--ghost"
-                href="https://www.google.com/maps/search/?api=1&query=Av.+de+Rafaela+Ybarra+34+Usera+Madrid"
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                Abrir en Google Maps
-              </a>
-            </div>
-          </div>
-        </div>
-      </section>
-    </main>
-
-    <!-- FOOTER -->
-    <footer class="site-footer">
-      <div class="container site-footer__container">
-        <div class="site-footer__brand">
-          <p class="site-footer__title">Barbería Nizalin</p>
-          <p class="site-footer__text">
-            Av. de Rafaela Ybarra, 34, Usera, 28026 Madrid
+    <!-- HERO -->
+    <section class="hero">
+      <div class="container hero__container">
+        <div class="hero__content">
+          <h1>Estilo, precisión y confianza</h1>
+          <p>
+            Cortes modernos, fades perfectos y barba cuidada en un ambiente profesional.
+            Reserva tu cita online en menos de 1 minuto.
           </p>
+          <a href="#reserva" class="btn btn--primary">Reservar cita</a>
+          <p class="hero__location">📍 Av. de Rafaela Ybarra, 34 · Usera, Madrid</p>
         </div>
-        <p class="site-footer__copy">
-          &copy; <span id="footer-year"></span> Barbería Nizalin. Todos los derechos reservados.
-        </p>
-      </div>
-    </footer>
-  </div>
 
-  <script src="script.js"></script>
+        <div class="hero__media">
+          <img
+            src="https://images.unsplash.com/photo-1517832207067-4db24a2ae47c?auto=format&fit=crop&w=1200&q=80"
+            alt="Interior de barbería moderna"
+          />
+        </div>
+      </div>
+    </section>
+
+    <!-- RESERVA (NO TOCAR CLASES) -->
+    <section id="reserva" class="section section--booking">
+      <div class="container">
+
+        <header class="section__header">
+          <h2>Reserva online</h2>
+          <p>Completa tu reserva en 4 pasos claros y rápidos.</p>
+        </header>
+
+        <div class="booking-layout">
+
+          <!-- FLUJO -->
+          <div class="booking-flow">
+
+            <section class="booking-step">
+              <h3>Paso 1 · Elige tu servicio</h3>
+              <div class="booking-options js-services"></div>
+            </section>
+
+            <section class="booking-step">
+              <h3>Paso 2 · Elige tu barbero</h3>
+              <div class="booking-options js-barbers"></div>
+            </section>
+
+            <section class="booking-step">
+              <h3>Paso 3 · Elige el día</h3>
+              <input type="date" id="booking-date">
+            </section>
+
+            <section class="booking-step">
+              <h3>Paso 4 · Elige la hora</h3>
+              <div class="booking-options js-hours"></div>
+            </section>
+
+          </div>
+
+          <!-- RESUMEN -->
+          <aside class="booking-summary">
+            <h3>Resumen de tu cita</h3>
+
+            <p>Servicio: <strong id="summary-service">Sin seleccionar</strong></p>
+            <p>Barbero: <strong id="summary-barber">Sin seleccionar</strong></p>
+            <p>Día: <strong id="summary-date">Sin seleccionar</strong></p>
+            <p>Hora: <strong id="summary-hour">Sin seleccionar</strong></p>
+
+            <button id="confirm" class="btn btn--primary">
+              Confirmar (simulado)
+            </button>
+
+            <p class="booking-summary__note">
+              Demo funcional. La reserva no se envía todavía.
+            </p>
+          </aside>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- EQUIPO -->
+    <section id="equipo" class="section">
+      <div class="container">
+        <h2>Nuestro equipo</h2>
+
+        <div class="team-grid">
+          <div class="team-card">
+            <img src="https://images.unsplash.com/photo-1600891964599-f61ba0e24092?auto=format&fit=crop&w=400&q=80" alt="Carlos">
+            <h3>Carlos</h3>
+            <p>Especialista en fades y degradados</p>
+          </div>
+
+          <div class="team-card">
+            <img src="https://images.unsplash.com/photo-1520975916090-3105956dac38?auto=format&fit=crop&w=400&q=80" alt="Adrián">
+            <h3>Adrián</h3>
+            <p>Corte clásico y barba</p>
+          </div>
+
+          <div class="team-card">
+            <img src="https://images.unsplash.com/photo-1599351431202-1e0f0137899a?auto=format&fit=crop&w=400&q=80" alt="Miguel">
+            <h3>Miguel</h3>
+            <p>Diseño y perfilado</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- LOCAL -->
+    <section id="local" class="section">
+      <div class="container">
+        <h2>Nuestro local</h2>
+
+        <div class="local-gallery">
+          <img src="https://images.unsplash.com/photo-1585747860715-2ba37e788b70?auto=format&fit=crop&w=900&q=80" alt="">
+          <img src="https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=900&q=80" alt="">
+          <img src="https://images.unsplash.com/photo-1521590832167-7bcbfaa6381f?auto=format&fit=crop&w=900&q=80" alt="">
+        </div>
+      </div>
+    </section>
+
+    <!-- MAPA -->
+    <section id="mapa" class="section">
+      <div class="container">
+        <h2>Cómo llegar</h2>
+
+        <iframe
+          src="https://www.google.com/maps?q=Av.+de+Rafaela+Ybarra+34+Madrid&output=embed"
+          width="100%" height="350"
+          style="border:0;"
+          loading="lazy">
+        </iframe>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="site-footer">
+    <div class="container">
+      <p>© Barbería Nizalin · Usera, Madrid</p>
+    </div>
+  </footer>
+
+</div>
+
+<script src="script.js"></script>
 </body>
 </html>
