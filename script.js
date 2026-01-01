@@ -1,154 +1,294 @@
-// Año dinámico en el footer
-const yearSpan = document.getElementById('year');
-if (yearSpan) {
-  yearSpan.textContent = new Date().getFullYear();
-}
+// ======================================
+// Utilidades
+// ======================================
 
-// Menú móvil
-const menuToggle = document.querySelector('.menu-toggle');
-const nav = document.querySelector('.main-nav');
-
-if (menuToggle && nav) {
-  menuToggle.addEventListener('click', () => {
-    nav.classList.toggle('is-open');
-  });
-
-  // Cerrar menú al hacer clic en un enlace
-  nav.querySelectorAll('a').forEach(link => {
-    link.addEventListener('click', () => nav.classList.remove('is-open'));
-  });
-}
-
-// Animaciones suaves al hacer scroll usando IntersectionObserver
-const animatedElements = document.querySelectorAll(
-  '.service-card, .why-card, .gallery-item, .review-card, .contact-info, .contact-map, .booking-form, .booking-sidebar'
-);
-
-animatedElements.forEach(el => {
-  el.setAttribute('data-animate', 'fade-up');
+// Scroll suave al hacer clic en botones con data-scroll-target
+document.addEventListener("click", (event) => {
+  const target = event.target.closest("[data-scroll-target]");
+  if (!target) return;
+  const selector = target.getAttribute("data-scroll-target");
+  const el = document.querySelector(selector);
+  if (!el) return;
+  el.scrollIntoView({ behavior: "smooth" });
 });
 
-const observer = new IntersectionObserver(
-  entries => {
-    entries.forEach(entry => {
-      if (entry.isIntersecting) {
-        entry.target.classList.add('is-visible');
-        observer.unobserve(entry.target);
-      }
-    });
-  },
-  {
-    threshold: 0.15
-  }
-);
+// Año dinámico en el footer
+const footerYearEl = document.getElementById("footer-year");
+if (footerYearEl) {
+  footerYearEl.textContent = new Date().getFullYear();
+}
 
-animatedElements.forEach(el => observer.observe(el));
+// ======================================
+// Reserva: estado de la selección
+// ======================================
 
-// -------------------------
-// Sistema simple de barberos/horarios
-// -------------------------
-
-// Definición básica de horarios por barbero (orientativos)
-const barberSchedules = {
-  'Nizalin (jefe)': [
-    '10:00', '10:30', '11:00', '11:30',
-    '12:00', '12:30', '13:00', '13:30',
-    '16:30', '17:00', '17:30', '18:00',
-    '18:30', '19:00', '19:30', '20:00'
-  ],
-  'Carlos': [
-    '10:00', '10:30', '11:00', '11:30',
-    '12:00', '12:30', '13:00',
-    '16:30', '17:00', '17:30', '18:00',
-    '18:30', '19:00', '19:30'
-  ],
-  'Mario': [
-    '11:00', '11:30', '12:00', '12:30',
-    '17:00', '17:30', '18:00', '18:30',
-    '19:00', '19:30', '20:00'
-  ]
+const state = {
+  services: [],
+  barbers: [],
+  selectedService: null,
+  selectedBarberId: null,
+  selectedDate: null,
+  selectedHour: null,
 };
 
-const barberSelect = document.getElementById('barber');
-const timeSelect = document.getElementById('time');
-const bookingForm = document.getElementById('booking-form');
+// Elementos del DOM
+const servicesContainer = document.getElementById("services-container");
+const barbersContainer = document.getElementById("barbers-container");
+const hoursContainer = document.getElementById("hours-container");
 
-function fillTimeOptions(barber) {
-  // Limpia opciones actuales
-  timeSelect.innerHTML = '';
+const dateInput = document.getElementById("booking-date");
 
-  if (!barber || !barberSchedules[barber]) {
-    const option = document.createElement('option');
-    option.value = '';
-    option.disabled = true;
-    option.selected = true;
-    option.textContent = 'Elige primero un barbero';
-    timeSelect.appendChild(option);
+const summaryService = document.getElementById("summary-service");
+const summaryBarber = document.getElementById("summary-barber");
+const summaryDate = document.getElementById("summary-date");
+const summaryHour = document.getElementById("summary-hour");
+
+const confirmButton = document.getElementById("confirm-booking");
+const feedbackEl = document.getElementById("booking-feedback");
+
+// ======================================
+// Carga de data.json
+// ======================================
+
+async function loadData() {
+  try {
+    const res = await fetch("data.json");
+    const data = await res.json();
+    state.services = data.services || [];
+    state.barbers = data.barbers || [];
+    renderServices();
+    renderBarbers();
+    renderHoursMessagePlaceholder();
+  } catch (error) {
+    console.error("Error cargando data.json", error);
+    if (feedbackEl) {
+      feedbackEl.textContent = "No se han podido cargar los servicios y barberos.";
+    }
+  }
+}
+
+// ======================================
+// Render: Servicios
+// ======================================
+
+function renderServices() {
+  if (!servicesContainer) return;
+  servicesContainer.innerHTML = "";
+
+  state.services.forEach((service) => {
+    const button = document.createElement("button");
+    button.type = "button";
+    button.className = "booking-option";
+    button.textContent = service.name;
+
+    button.addEventListener("click", () => {
+      state.selectedService = service.name;
+      updateActiveService(button);
+      updateSummary();
+    });
+
+    servicesContainer.appendChild(button);
+  });
+}
+
+function updateActiveService(activeButton) {
+  const allButtons = servicesContainer.querySelectorAll(".booking-option");
+  allButtons.forEach((btn) => btn.classList.remove("booking-option--active"));
+  if (activeButton) {
+    activeButton.classList.add("booking-option--active");
+  }
+}
+
+// ======================================
+// Render: Barberos
+// ======================================
+
+function renderBarbers() {
+  if (!barbersContainer) return;
+  barbersContainer.innerHTML = "";
+
+  state.barbers.forEach((barber) => {
+    const button = document.createElement("button");
+    button.type = "button";
+    button.className = "booking-option";
+
+    const card = document.createElement("div");
+    card.className = "barber-card";
+
+    const avatar = document.createElement("div");
+    avatar.className = "barber-card__avatar";
+
+    const img = document.createElement("img");
+    img.src = barber.image;
+    img.alt = `Barbero ${barber.name}`;
+    avatar.appendChild(img);
+
+    const info = document.createElement("div");
+    info.className = "barber-card__info";
+
+    const nameEl = document.createElement("p");
+    nameEl.className = "barber-card__name";
+    nameEl.textContent = barber.name;
+
+    const taglineEl = document.createElement("p");
+    taglineEl.className = "barber-card__tagline";
+    taglineEl.textContent = barber.tagline || "Especialista en cortes y fades";
+
+    info.appendChild(nameEl);
+    info.appendChild(taglineEl);
+
+    card.appendChild(avatar);
+    card.appendChild(info);
+    button.appendChild(card);
+
+    button.addEventListener("click", () => {
+      state.selectedBarberId = barber.id;
+      state.selectedHour = null; // limpiar hora si cambia barbero
+      updateActiveBarber(button);
+      renderHoursForBarber(barber);
+      updateSummary();
+    });
+
+    barbersContainer.appendChild(button);
+  });
+}
+
+function updateActiveBarber(activeButton) {
+  const allButtons = barbersContainer.querySelectorAll(".booking-option");
+  allButtons.forEach((btn) => btn.classList.remove("booking-option--active"));
+  if (activeButton) {
+    activeButton.classList.add("booking-option--active");
+  }
+}
+
+// ======================================
+// Render: Horas
+// ======================================
+
+function renderHoursMessagePlaceholder() {
+  if (!hoursContainer) return;
+  hoursContainer.innerHTML = "";
+  const message = document.createElement("p");
+  message.className = "booking-step__subtitle";
+  message.textContent = "Selecciona primero un barbero para ver sus horarios.";
+  hoursContainer.appendChild(message);
+}
+
+function renderHoursForBarber(barber) {
+  if (!hoursContainer) return;
+  hoursContainer.innerHTML = "";
+
+  if (!barber || !Array.isArray(barber.hours) || barber.hours.length === 0) {
+    const message = document.createElement("p");
+    message.className = "booking-step__subtitle";
+    message.textContent = "No hay horarios configurados para este barbero.";
+    hoursContainer.appendChild(message);
     return;
   }
 
-  const defaultOption = document.createElement('option');
-  defaultOption.value = '';
-  defaultOption.disabled = true;
-  defaultOption.selected = true;
-  defaultOption.textContent = 'Selecciona una hora disponible';
-  timeSelect.appendChild(defaultOption);
+  barber.hours.forEach((hour) => {
+    const btn = document.createElement("button");
+    btn.type = "button";
+    btn.className = "booking-option hour-button";
+    btn.textContent = hour;
 
-  barberSchedules[barber].forEach(time => {
-    const option = document.createElement('option');
-    option.value = time;
-    option.textContent = time;
-    timeSelect.appendChild(option);
+    btn.addEventListener("click", () => {
+      state.selectedHour = hour;
+      updateActiveHour(btn);
+      updateSummary();
+    });
+
+    hoursContainer.appendChild(btn);
   });
 }
 
-// Actualizar horas cuando cambia el barbero
-if (barberSelect && timeSelect) {
-  barberSelect.addEventListener('change', e => {
-    fillTimeOptions(e.target.value);
+function updateActiveHour(activeButton) {
+  const allButtons = hoursContainer.querySelectorAll(".booking-option");
+  allButtons.forEach((btn) => btn.classList.remove("booking-option--active"));
+  if (activeButton) {
+    activeButton.classList.add("booking-option--active");
+  }
+}
+
+// ======================================
+// Date input
+// ======================================
+
+if (dateInput) {
+  // Fecha mínima = hoy
+  const today = new Date();
+  const yyyy = today.getFullYear();
+  const mm = String(today.getMonth() + 1).padStart(2, "0");
+  const dd = String(today.getDate()).padStart(2, "0");
+  dateInput.min = `${yyyy}-${mm}-${dd}`;
+
+  dateInput.addEventListener("change", () => {
+    state.selectedDate = dateInput.value || null;
+    updateSummary();
   });
 }
 
-// Envío del formulario por WhatsApp
-if (bookingForm) {
-  bookingForm.addEventListener('submit', e => {
-    e.preventDefault();
+// ======================================
+// Resumen
+// ======================================
 
-    const barber = barberSelect.value;
-    const date = document.getElementById('date').value;
-    const time = timeSelect.value;
-    const service = document.getElementById('service').value;
-    const name = document.getElementById('name').value.trim();
+function updateSummary() {
+  if (summaryService) {
+    summaryService.textContent = state.selectedService || "Sin seleccionar";
+  }
 
-    if (!barber || !date || !time || !service) {
-      alert('Por favor, completa barbero, día, horario y servicio antes de enviar.');
+  if (summaryBarber) {
+    const barber = state.barbers.find((b) => b.id === state.selectedBarberId);
+    summaryBarber.textContent = barber ? barber.name : "Sin seleccionar";
+  }
+
+  if (summaryDate) {
+    if (!state.selectedDate) {
+      summaryDate.textContent = "Sin seleccionar";
+    } else {
+      const date = new Date(state.selectedDate);
+      if (!isNaN(date.getTime())) {
+        summaryDate.textContent = date.toLocaleDateString("es-ES", {
+          weekday: "short",
+          day: "2-digit",
+          month: "short",
+          year: "numeric",
+        });
+      } else {
+        summaryDate.textContent = "Sin seleccionar";
+      }
+    }
+  }
+
+  if (summaryHour) {
+    summaryHour.textContent = state.selectedHour || "Sin seleccionar";
+  }
+}
+
+// ======================================
+// Confirmación simulada
+// ======================================
+
+if (confirmButton) {
+  confirmButton.addEventListener("click", () => {
+    if (!feedbackEl) return;
+
+    if (!state.selectedService || !state.selectedBarberId || !state.selectedDate || !state.selectedHour) {
+      feedbackEl.textContent = "Completa los 4 pasos para confirmar tu reserva.";
+      feedbackEl.style.color = "#f97373";
       return;
     }
 
-    // Formatear fecha a dd/mm/aaaa para verlo claro en WhatsApp
-    const formattedDate = (() => {
-      const d = new Date(date);
-      if (Number.isNaN(d.getTime())) return date;
-      const day = String(d.getDate()).padStart(2, '0');
-      const month = String(d.getMonth() + 1).padStart(2, '0');
-      const year = d.getFullYear();
-      return `${day}/${month}/${year}`;
-    })();
+    const barber = state.barbers.find((b) => b.id === state.selectedBarberId);
+    const barberName = barber ? barber.name : "";
 
-    const encodedName = name || 'Sin nombre indicado';
-
-    const message =
-      `Hola, quiero pedir cita en Barbería Nizalin:%0A` +
-      `• Nombre: ${encodeURIComponent(encodedName)}%0A` +
-      `• Barbero: ${encodeURIComponent(barber)}%0A` +
-      `• Día: ${encodeURIComponent(formattedDate)}%0A` +
-      `• Hora: ${encodeURIComponent(time)}%0A` +
-      `• Servicio: ${encodeURIComponent(service)}%0A%0A` +
-      `¿Hay disponibilidad para esta hora?`;
-
-    const phone = '34910279675';
-    const whatsappURL = `https://wa.me/${phone}?text=${message}`;
-
-    window.open(whatsappURL, '_blank');
+    feedbackEl.style.color = "#4ade80";
+    feedbackEl.textContent = `Reserva simulada para "${state.selectedService}" con ${barberName} el ${summaryDate.textContent} a las ${state.selectedHour}.`;
   });
 }
+
+// ======================================
+// Inicialización
+// ======================================
+
+loadData();

@@ -1,0 +1,31 @@
+{
+  "services": [
+    { "name": "Corte clásico · 12 €" },
+    { "name": "Fade / degradado · 15 €" },
+    { "name": "Arreglo de barba · 10 €" },
+    { "name": "Corte + barba · 20 €" }
+  ],
+  "barbers": [
+    {
+      "id": "nizalin",
+      "name": "Nizalin",
+      "tagline": "Clásicos limpios y fades pulidos",
+      "image": "https://images.unsplash.com/photo-1532479210568-4e8e4f7b5f90?auto=format&fit=crop&w=600&q=80",
+      "hours": ["10:00", "10:30", "11:00", "12:00", "16:00", "16:30", "17:00"]
+    },
+    {
+      "id": "tarek",
+      "name": "Tarek",
+      "tagline": "Degradados urbanos y diseños",
+      "image": "https://images.unsplash.com/photo-1519415943484-9fa1873496ef?auto=format&fit=crop&w=600&q=80",
+      "hours": ["11:00", "11:30", "12:00", "17:00", "17:30", "18:00", "18:30"]
+    },
+    {
+      "id": "dani",
+      "name": "Dani",
+      "tagline": "Barba y perfilados al detalle",
+      "image": "https://images.unsplash.com/photo-1519638399535-1b036603ac77?auto=format&fit=crop&w=600&q=80",
+      "hours": ["10:00", "10:30", "13:00", "13:30", "18:00", "18:30", "19:00"]
+    }
+  ]
+}
