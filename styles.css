@@ -636,3 +636,34 @@ button {
     top: 6.5rem;
   }
 }
+
+
+/* =========================
+   OPCIONES DE RESERVA
+   ========================= */
+
+.booking-options .option {
+  width: 100%;
+  padding: 12px 16px;
+  margin-bottom: 10px;
+  background: #1c1c1c;
+  color: #fff;
+  border: 1px solid #333;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  text-align: left;
+}
+
+/* Hover */
+.booking-options .option:hover {
+  border-color: #666;
+}
+
+/* ✅ OPCIÓN SELECCIONADA */
+.booking-options .option.active {
+  background: #b11226;       /* rojo elegante */
+  border-color: #b11226;
+  color: #fff;
+  font-weight: 600;
+}
